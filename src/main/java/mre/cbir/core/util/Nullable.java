@@ -10,7 +10,7 @@ public interface Nullable<T>
         {
             return value.get();
         }
-        catch (final Exception e)
+        catch (final Exception _)
         {
             return null;
         }
