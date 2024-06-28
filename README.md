@@ -34,3 +34,9 @@ Follow the steps below to compile and run the program:
     # clean up build artifacts
     mvn clean
     ```
+
+4. Run:
+
+    ```bash
+    java -jar target/cbir.jar
+    ```
