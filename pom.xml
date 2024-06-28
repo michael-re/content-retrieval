@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>mre.cbir</groupId>
-    <artifactId>content-retrieval</artifactId>
+    <artifactId>cbir</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <!-- properties -->
