@@ -43,8 +43,9 @@ public final class Container
 
     public boolean relevant(final boolean isRelevant)
     {
-        this.relevant.set(isRelevant);
-        return relevant();
+        final var previous = relevant();
+        relevant.set(isRelevant);
+        return previous;
     }
 
     public int index()

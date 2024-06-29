@@ -11,7 +11,7 @@ public final class DistanceMatrix
     private final Collection collection;
     private final float[][]  matrix;
 
-    public DistanceMatrix(final Collection collection,
+    public DistanceMatrix(final Collection  collection,
                           final Histogram[] histograms)
     {
         Precondition.nonNull(collection);
@@ -28,6 +28,29 @@ public final class DistanceMatrix
                 final var hi = histograms[i];
                 final var hj = histograms[j];
                 matrix[i][j] = manhattanDistance(hi, hj);
+                matrix[j][i] = matrix[i][j];
+            }
+        }
+    }
+
+    public DistanceMatrix(final Collection  collection,
+                          final Histogram[] histograms,
+                          final float[]     weights)
+    {
+        Precondition.nonNull(collection);
+        Precondition.nonNull(histograms);
+        Precondition.validArg(collection.size() == histograms.length);
+
+        this.collection = collection;
+        this.matrix     = new float[collection.size()][collection.size()];
+
+        for (var i = 0; i < collection.size(); i++)
+        {
+            for (var j = 0; j <= i; j++)
+            {
+                final var hi = histograms[i];
+                final var hj = histograms[j];
+                matrix[i][j] = manhattanDistance(hi, hj, weights);
                 matrix[j][i] = matrix[i][j];
             }
         }
@@ -79,11 +102,25 @@ public final class DistanceMatrix
         var distance = 0.0f;
 
         for (var i = 0; i < size; i++)
-        {
-            final var b1 = a.bin(i) / ((float) a.container().size());
-            final var b2 = b.bin(i) / ((float) b.container().size());
-            distance    += Math.abs(b1 - b2);
-        }
+            distance += Math.abs((a.bin(i) / ((float) a.container().size())) -
+                                 (b.bin(i) / ((float) b.container().size())));
+
+        return distance;
+    }
+
+    private static float manhattanDistance(final Histogram a,
+                                           final Histogram b,
+                                           final float[]   weights)
+    {
+        Precondition.nonNull(a);
+        Precondition.nonNull(b);
+
+        var size     = Math.max(a.size(), b.size());
+        var distance = 0.0f;
+
+        Precondition.validArg(weights.length == size);
+        for (var i = 0; i < size; i++)
+            distance += weights[i] * Math.abs(a.bin(i) - b.bin(i));
 
         return distance;
     }
