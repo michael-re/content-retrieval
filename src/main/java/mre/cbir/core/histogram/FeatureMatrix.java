@@ -8,15 +8,18 @@ import mre.cbir.core.util.Precondition;
 
 public final class FeatureMatrix
 {
-    private final Collection  collection;
-    private final Histogram[] colorCodeHistograms;
-    private final Histogram[] intensityHistograms;
+    private final Collection     collection;
+    private final DistanceMatrix colorCodeDistanceMatrix;
+    private final DistanceMatrix intensityDistanceMatrix;
 
     public FeatureMatrix(final Collection collection)
     {
-        this.collection          = Precondition.nonNull(collection);
-        this.colorCodeHistograms = Compute.histograms(collection, new ColorCodeAnalyzer());
-        this.intensityHistograms = Compute.histograms(collection, new IntensityAnalyzer());
+        final var colorCode = Compute.histograms(collection, new ColorCodeAnalyzer());
+        final var intensity = Compute.histograms(collection, new IntensityAnalyzer());
+
+        this.collection              = Precondition.nonNull(collection);
+        this.colorCodeDistanceMatrix = new DistanceMatrix(collection, colorCode);
+        this.intensityDistanceMatrix = new DistanceMatrix(collection, intensity);
     }
 
     public Collection collection()
@@ -24,14 +27,14 @@ public final class FeatureMatrix
         return collection;
     }
 
-    public Histogram[] colorCodeHistograms()
+    public DistanceMatrix colorCodeDistanceMatrix()
     {
-        return colorCodeHistograms;
+        return colorCodeDistanceMatrix;
     }
 
-    public Histogram[] intensityHistograms()
+    public DistanceMatrix intensityDistanceMatrix()
     {
-        return intensityHistograms;
+        return intensityDistanceMatrix;
     }
 
     private static final class Compute
