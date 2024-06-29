@@ -1,5 +1,6 @@
 package mre.cbir.core.image;
 
+import mre.cbir.core.util.NaturalOrder;
 import mre.cbir.core.util.Nullable;
 import mre.cbir.core.util.Precondition;
 
@@ -31,6 +32,7 @@ public final class Collection
                                   .orElse(Collections.emptyList())
                                   .stream()
                                   .filter(Objects::nonNull)
+                                  .sorted(new NaturalOrder<>())
                                   .map(file -> Container.create(file, index))
                                   .filter(Objects::nonNull)
                                   .toList();
