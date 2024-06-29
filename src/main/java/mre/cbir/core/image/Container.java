@@ -1,5 +1,6 @@
 package mre.cbir.core.image;
 
+import mre.cbir.core.analyzer.PixelConsumer;
 import mre.cbir.core.util.Nullable;
 import mre.cbir.core.util.Precondition;
 
@@ -54,6 +55,15 @@ public final class Container
     public int size()
     {
         return image.getWidth() * image.getHeight();
+    }
+
+    public Container forEachPixel(final PixelConsumer action)
+    {
+        Precondition.nonNull(action);
+        for (var y = 0; y < image.getHeight(); y++)
+            for (var x = 0; x < image.getWidth(); x++)
+                action.accept(image.getRGB(x, y));
+        return this;
     }
 
     @Override
