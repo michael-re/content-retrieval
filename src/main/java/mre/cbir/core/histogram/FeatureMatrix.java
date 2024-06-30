@@ -95,14 +95,20 @@ public final class FeatureMatrix
             return histograms;
         }
 
-        private static Histogram[] histograms(final Collection     collection,
-                                              final Histogram[]... histograms)
+        private static Histogram[] histograms(final Collection  collection,
+                                              final Histogram[] colorCodes,
+                                              final Histogram[] intensity)
         {
             Precondition.nonNull(collection);
-            Precondition.nonNull(histograms);
+            Precondition.nonNull(colorCodes);
+            Precondition.nonNull(intensity);
 
             final var normalized = new Histogram[collection.size()];
-            collection.forEach(c -> normalized[c.index()] = new Histogram(c, histograms[c.index()]));
+            collection.forEach(c ->
+            {
+                final var i   = c.index();
+                normalized[i] = new Histogram(c, colorCodes[i], intensity[i]);
+            });
 
             final var mean  = binMean(normalized);
             final var stdev = binStdev(mean, normalized);
@@ -140,7 +146,6 @@ public final class FeatureMatrix
         {
             Precondition.nonNull(mean);
             Precondition.nonNull(histograms);
-            Precondition.validArg(mean.length == histograms.length);
 
             final var stdev = new float[mean.length];
             for (var i = 0; i < stdev.length; i++)

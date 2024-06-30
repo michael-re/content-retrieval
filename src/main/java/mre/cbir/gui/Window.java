@@ -18,7 +18,9 @@ public final class Window extends JFrame
     private final int WINDOW_WIDTH  = 1_000;
     private final int WINDOW_HEIGHT = 1_000;
 
-    private Collection collection;
+    private Collection    collection;
+    private FeatureMatrix featureMatrix;
+
     private Menu       menu;
 
     public Window()
@@ -108,7 +110,8 @@ public final class Window extends JFrame
                 return;
             }
 
-            this.collection = collection;
+            this.collection    = collection;
+            this.featureMatrix = new FeatureMatrix(collection);
             System.gc();
         }
     }
