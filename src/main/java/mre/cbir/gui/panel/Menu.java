@@ -22,6 +22,12 @@ public final class Menu extends JMenuBar
     private final Map<String, JMenu>     menus = new HashMap<>();
     private final Map<String, JMenuItem> items = new HashMap<>();
 
+    public JMenuItem getItem(final String item)
+    {
+        Precondition.nonNull(item);
+        return Precondition.nonNull(items.get(item));
+    }
+
     public JMenuItem addItem(final String menu, final String item)
     {
         Precondition.nonNull(menu);

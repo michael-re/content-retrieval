@@ -1,6 +1,7 @@
 package mre.cbir.gui;
 
 import mre.cbir.gui.panel.Menu;
+import mre.cbir.gui.util.Assets;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -34,6 +35,10 @@ public final class Window extends JFrame
         menu.addItem    ("File",    "Open Folder");
         menu.addItem    ("File",    "Exit");
         menu.addCheckbox("Options", "Relevance Feedback");
+
+        menu.getItem("Open Folder").setIcon(Assets.icon("folder-open"));
+        menu.getItem("Exit")       .setIcon(Assets.icon("exit"));
+
         this.setJMenuBar(menu);
     }
 }
