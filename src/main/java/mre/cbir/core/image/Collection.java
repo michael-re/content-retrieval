@@ -56,6 +56,11 @@ public final class Collection
         return this;
     }
 
+    public File directory()
+    {
+        return directory;
+    }
+
     @Override
     public int hashCode()
     {
