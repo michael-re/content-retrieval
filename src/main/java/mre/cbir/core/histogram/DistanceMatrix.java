@@ -65,23 +65,19 @@ public final class DistanceMatrix
 
     public Comparator<Container> comparator(final Container source)
     {
-        return new Comparator<Container>()
+        return (final Container a, final Container b) ->
         {
-            @Override
-            public int compare(final Container a, final Container b)
-            {
-                validContainer(source);
-                validContainer(a);
-                validContainer(b);
+            validContainer(source);
+            validContainer(a);
+            validContainer(b);
 
-                final var distanceA = distance(source, a);
-                final var distanceB = distance(source, b);
-                final var distance  = distanceA - distanceB;
+            final var distanceA = distance(source, a);
+            final var distanceB = distance(source, b);
+            final var distance  = distanceA - distanceB;
 
-                if (distance > 0) return  1;
-                if (distance < 0) return -1;
-                return 0;
-            }
+            if (distance > 0) return  1;
+            if (distance < 0) return -1;
+            return 0;
         };
     }
 
