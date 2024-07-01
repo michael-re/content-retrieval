@@ -1,6 +1,5 @@
 package mre.cbir.gui;
 
-import mre.cbir.core.histogram.FeatureMatrix;
 import mre.cbir.core.image.Collection;
 import mre.cbir.core.util.Nullable;
 import mre.cbir.gui.panel.Gallery;
@@ -61,7 +60,7 @@ public final class Window extends JFrame
     private void initPanels()
     {
         this.setLayout(Layout.migLayout(10, 10));
-        this.getContentPane().add(gallery, "cell 0 0 5 10 5");
+        this.getContentPane().add(gallery, "cell 0 5 10 5");
     }
 
     private void openAction()

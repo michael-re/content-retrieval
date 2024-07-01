@@ -5,6 +5,10 @@ import mre.cbir.core.util.Nullable;
 import mre.cbir.core.util.Precondition;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -16,15 +20,17 @@ public final class Container
     private final AtomicInteger index;
     private final AtomicBoolean relevant;
     private final BufferedImage image;
+    private final Icon          smallIcon;
 
     private Container(final File           file,
                       final AtomicInteger index,
                       final BufferedImage image)
     {
-        this.file     = Precondition.nonNull(file);
-        this.index    = Precondition.nonNull(index);
-        this.image    = Precondition.nonNull(image);
-        this.relevant = new AtomicBoolean(false);
+        this.file      = Precondition.nonNull(file);
+        this.index     = Precondition.nonNull(index);
+        this.image     = Precondition.nonNull(image);
+        this.smallIcon = new ImageIcon(scaled(110, 70));
+        this.relevant  = new AtomicBoolean(false);
     }
 
     public static Container create(final File file, final AtomicInteger index)
@@ -58,6 +64,16 @@ public final class Container
         return image.getWidth() * image.getHeight();
     }
 
+    public String name()
+    {
+        return file.getName();
+    }
+
+    public Icon smallIcon()
+    {
+        return smallIcon;
+    }
+
     public Container forEachPixel(final PixelConsumer action)
     {
         Precondition.nonNull(action);
@@ -65,6 +81,22 @@ public final class Container
             for (var x = 0; x < image.getWidth(); x++)
                 action.accept(image.getRGB(x, y));
         return this;
+    }
+
+    private Image scaled(final double maxWidth, final double maxHeight)
+    {
+        Precondition.validArg(maxWidth  > 0, "invalid scaled width");
+        Precondition.validArg(maxHeight > 0, "invalid scaled height");
+
+        final var width   = (double) image.getWidth();
+        final var height  = (double) image.getHeight();
+        final var ratio   = Math.min(maxWidth / width, maxHeight / height);
+        final var scaledW = (int) Math.ceil(width  * ratio);
+        final var scaledH = (int) Math.ceil(height * ratio);
+
+        return (scaledW > maxWidth || scaledH > maxWidth)
+             ? scaled(scaledW, scaledH)
+             : image.getScaledInstance(scaledW, scaledH, Image.SCALE_SMOOTH);
     }
 
     @Override
