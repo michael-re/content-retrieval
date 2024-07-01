@@ -3,6 +3,7 @@ package mre.cbir.gui;
 import mre.cbir.core.histogram.FeatureMatrix;
 import mre.cbir.core.image.Collection;
 import mre.cbir.core.util.Nullable;
+import mre.cbir.gui.panel.Gallery;
 import mre.cbir.gui.panel.Menu;
 import mre.cbir.gui.util.Assets;
 import mre.cbir.gui.util.Layout;
@@ -19,15 +20,13 @@ public final class Window extends JFrame
     private final int WINDOW_WIDTH  = 1_000;
     private final int WINDOW_HEIGHT = 1_000;
 
-    private Collection    collection;
-    private FeatureMatrix featureMatrix;
-
-    private Menu       menu;
+    private final Menu    menu;
+    private final Gallery gallery;
 
     public Window()
     {
-        this.collection = new Collection();
-        this.menu       = new Menu();
+        this.menu    = new Menu();
+        this.gallery = new Gallery();
 
         this.initFrame();
         this.initMenu();
@@ -62,6 +61,7 @@ public final class Window extends JFrame
     private void initPanels()
     {
         this.setLayout(Layout.migLayout(10, 10));
+        this.getContentPane().add(gallery, "cell 0 0 5 10 5");
     }
 
     private void openAction()
@@ -83,7 +83,7 @@ public final class Window extends JFrame
                 return;
             }
 
-            if (Objects.equals(collection.directory(), file))
+            if (Objects.equals(gallery.collection().directory(), file))
             {
                 JOptionPane.showMessageDialog(
                     this,
@@ -117,8 +117,7 @@ public final class Window extends JFrame
                 return;
             }
 
-            this.collection    = collection;
-            this.featureMatrix = new FeatureMatrix(collection);
+            gallery.load(collection);
             System.gc();
         }
     }
