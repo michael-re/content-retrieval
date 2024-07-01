@@ -2,7 +2,6 @@ package mre.cbir.gui.panel;
 
 import mre.cbir.core.util.Precondition;
 
-import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
