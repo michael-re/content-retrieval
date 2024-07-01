@@ -5,6 +5,7 @@ import mre.cbir.core.image.Collection;
 import mre.cbir.core.util.Nullable;
 import mre.cbir.gui.panel.Menu;
 import mre.cbir.gui.util.Assets;
+import mre.cbir.gui.util.Layout;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -30,6 +31,7 @@ public final class Window extends JFrame
 
         this.initFrame();
         this.initMenu();
+        this.initPanels();
     }
 
     private void initFrame()
@@ -55,6 +57,11 @@ public final class Window extends JFrame
         menu.getItem("Relevance Feedback").addActionListener(e -> rfAction());
 
         this.setJMenuBar(menu);
+    }
+
+    private void initPanels()
+    {
+        this.setLayout(Layout.migLayout(10, 10));
     }
 
     private void openAction()
