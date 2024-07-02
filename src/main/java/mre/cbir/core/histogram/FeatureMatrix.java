@@ -156,7 +156,7 @@ public final class FeatureMatrix
                 final var bin = i;
                 final var ssd = Arrays.stream(histograms)
                                       .map(Precondition::nonNull)
-                                      .mapToDouble(h -> Math.pow(h.bin(bin), 2))
+                                      .mapToDouble(h -> Math.pow(h.bin(bin) - mean[bin], 2))
                                       .sum();
 
                 final var len = histograms.length - 1;
