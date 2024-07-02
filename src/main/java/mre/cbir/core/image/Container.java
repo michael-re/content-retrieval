@@ -21,6 +21,7 @@ public final class Container
     private final AtomicBoolean relevant;
     private final BufferedImage image;
     private final Icon          smallIcon;
+    private final Icon          largeIcon;
 
     private Container(final File           file,
                       final AtomicInteger index,
@@ -30,6 +31,7 @@ public final class Container
         this.index     = Precondition.nonNull(index);
         this.image     = Precondition.nonNull(image);
         this.smallIcon = new ImageIcon(scaled(110, 70));
+        this.largeIcon = new ImageIcon(scaled(700, 325));
         this.relevant  = new AtomicBoolean(false);
     }
 
@@ -72,6 +74,11 @@ public final class Container
     public Icon smallIcon()
     {
         return smallIcon;
+    }
+
+    public Icon largeIcon()
+    {
+        return largeIcon;
     }
 
     public Container forEachPixel(final PixelConsumer action)
