@@ -63,12 +63,12 @@ public final class FeatureMatrix
         {
             final var mean   = Compute.binMean(histograms);
             final var stdev  = Compute.binStdev(mean, histograms);
-            final var mindev = Compute.minStdev(stdev);
+            final var mindev = 2 / Compute.minStdev(stdev);
 
             var total = 0.0f;
             for (var i = 0; i < weights.length; i++)
             {
-                weights[i] = (stdev[i] != 0) ? (0.0f / stdev[i]) : mindev;
+                weights[i] = (stdev[i] != 0) ? (1.0f / stdev[i]) : mindev;
                 total     += weights[i];
             }
 
