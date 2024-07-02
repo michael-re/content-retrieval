@@ -27,6 +27,12 @@ public final class Menu extends JMenuBar
         return Precondition.nonNull(items.get(item));
     }
 
+    public JCheckBoxMenuItem getCheckBoxItem(final String item)
+    {
+        Precondition.nonNull(item);
+        return (JCheckBoxMenuItem) getItem(item);
+    }
+
     public JMenuItem addItem(final String menu, final String item)
     {
         Precondition.nonNull(menu);

@@ -50,9 +50,9 @@ public final class Window extends JFrame
         menu.getItem("Open Folder").setIcon(Assets.icon("folder-open"));
         menu.getItem("Exit")       .setIcon(Assets.icon("exit"));
 
-        menu.getItem("Open Folder")       .addActionListener(e -> openAction());
-        menu.getItem("Exit")              .addActionListener(e -> exitAction());
-        menu.getItem("Relevance Feedback").addActionListener(e -> rfAction());
+        menu.getItem("Open Folder")       .addActionListener(_ -> openAction());
+        menu.getItem("Exit")              .addActionListener(_ -> exitAction());
+        menu.getItem("Relevance Feedback").addActionListener(_ -> rfAction());
 
         this.setJMenuBar(menu);
     }
@@ -117,6 +117,8 @@ public final class Window extends JFrame
             }
 
             gallery.load(collection);
+            this.revalidate();
+            this.repaint();
             System.gc();
         }
     }
@@ -129,6 +131,10 @@ public final class Window extends JFrame
 
     private void rfAction()
     {
-        System.out.println("rf action");
+        final var item = menu.getCheckBoxItem("Relevance Feedback");
+        if (item.isSelected())
+            gallery.showCheckBox();
+        else
+            gallery.hideCheckBox();
     }
 }
