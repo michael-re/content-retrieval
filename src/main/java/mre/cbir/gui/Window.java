@@ -56,6 +56,7 @@ public final class Window extends JFrame
         menu.getItem("Open Folder")       .addActionListener(_ -> openAction());
         menu.getItem("Exit")              .addActionListener(_ -> exitAction());
         menu.getItem("Relevance Feedback").addActionListener(_ -> rfAction());
+        rfAction();
 
         this.setJMenuBar(menu);
     }
@@ -122,8 +123,11 @@ public final class Window extends JFrame
 
             gallery.load(collection);
             control.load(gallery);
+
+            this.rfAction();
             this.revalidate();
             this.repaint();
+
             System.gc();
         }
     }
@@ -138,8 +142,14 @@ public final class Window extends JFrame
     {
         final var item = menu.getCheckBoxItem("Relevance Feedback");
         if (item.isSelected())
+        {
+            item.setText("Relevance Feedback (Enabled)");
             gallery.showCheckBox();
+        }
         else
+        {
+            item.setText("Relevance Feedback (Disabled)");
             gallery.hideCheckBox();
+        }
     }
 }
