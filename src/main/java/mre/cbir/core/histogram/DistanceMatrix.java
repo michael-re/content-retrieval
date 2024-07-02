@@ -58,8 +58,8 @@ public final class DistanceMatrix
 
     public float distance(final Container a, final Container b)
     {
-        validContainer(a);
-        validContainer(b);
+        if (!collection.contains(a) || !collection.contains(b))
+            return Float.MAX_VALUE;
         return matrix[a.index()][b.index()];
     }
 
@@ -67,10 +67,6 @@ public final class DistanceMatrix
     {
         return (final Container a, final Container b) ->
         {
-            validContainer(source);
-            validContainer(a);
-            validContainer(b);
-
             final var distanceA = distance(source, a);
             final var distanceB = distance(source, b);
             final var distance  = distanceA - distanceB;
@@ -79,13 +75,6 @@ public final class DistanceMatrix
             if (distance < 0) return -1;
             return 0;
         };
-    }
-
-    private void validContainer(final Container container)
-    {
-        final var error = "container does not belong to this collection";
-        Precondition.nonNull(container);
-        Precondition.validArg(collection.contains(container), error);
     }
 
     private static float manhattanDistance(final Histogram a,
