@@ -224,6 +224,17 @@ public final class Pages extends JPanel
 
         protected static final class Empty extends View
         {
+            protected Empty()
+            {
+                final var border = Border.titleBorder("  ");
+                this.setBorder(Border.compoundBorder(border));
+                this.setLayout(Layout.gridBagLayout());
+
+                final var button = new JButton();
+                button.setVisible(false);
+                this.add(button);
+            }
+
             @Override protected void showCheckBox() {}
             @Override protected void hideCheckBox() {}
             @Override protected void check()        {}
