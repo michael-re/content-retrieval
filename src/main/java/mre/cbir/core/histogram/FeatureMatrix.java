@@ -107,7 +107,9 @@ public final class FeatureMatrix
             collection.forEach(c ->
             {
                 final var i   = c.index();
-                normalized[i] = new Histogram(c, colorCodes[i], intensity[i]);
+                normalized[i] = new Histogram(c, intensity[i], colorCodes[i]);
+                for (var bin = 0; bin < normalized[i].size(); bin++)
+                    normalized[i].div(bin, c.size());
             });
 
             final var mean  = binMean(normalized);
@@ -115,8 +117,9 @@ public final class FeatureMatrix
 
             // normalize: v = (v - μ) / σ
             for (var bin = 0; bin < mean.length; bin++)
-                for (var i = 0; i < normalized.length; i++)
-                    normalized[i].sub(bin, mean[bin]).div(bin, stdev[bin]);
+                for (var image = 0; image < normalized.length; image++)
+                    normalized[image].sub(bin, mean[bin])
+                                     .div(bin, stdev[bin]);
 
             return normalized;
         }

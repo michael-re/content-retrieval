@@ -39,10 +39,10 @@ public final class Histogram
 
         Arrays.stream(histograms)
               .map(Histogram::bins)
-              .forEach(bins -> {
-                    final var len = bins.length;
+              .forEach(b -> {
+                    final var len = b.length;
                     final var pos = desPos.getAndAdd(len);
-                    System.arraycopy(bins, 0, this.bins, pos, len);
+                    System.arraycopy(b, 0, bins, pos, len);
               });
     }
 
