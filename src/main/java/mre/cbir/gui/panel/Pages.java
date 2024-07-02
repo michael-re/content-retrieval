@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -77,12 +79,48 @@ public final class Pages extends JPanel
         showPage(currentPage.get() - 1);
     }
 
+    public void showCheckBox()
+    {
+        views.stream().forEach(View::showCheckBox);
+    }
+
+    public void hideCheckBox()
+    {
+        views.stream().forEach(View::hideCheckBox);
+    }
+
+    public void sort()
+    {
+        Collections.sort(views);
+        currentPage.incrementAndGet();
+        showPage(0);
+    }
+
+    public void sort(final Comparator<Container> comparator)
+    {
+        Precondition.nonNull(comparator);
+        Collections.sort(views, (a, b) -> comparator.compare(a.container(), b.container()));
+        currentPage.incrementAndGet();
+        showPage(0);
+    }
+
+    public void uncheck()
+    {
+        views.forEach(View::uncheck);
+    }
+
+    public void onViewClick(final Consumer<View> action)
+    {
+        Precondition.nonNull(action);
+        views.forEach(view -> view.onClick(action));
+    }
+
     private boolean validPage(final int pageIndex)
     {
         return !views.isEmpty() && (pageIndex >= 0 && pageIndex < pageCount);
     }
 
-    private static abstract class View extends JLabel
+    protected static abstract class View extends JLabel implements Comparable<View>
     {
         protected abstract void showCheckBox();
         protected abstract void hideCheckBox();
@@ -90,7 +128,20 @@ public final class Pages extends JPanel
         protected abstract void check();
         protected abstract void uncheck();
 
-        private static final class Filled extends View
+        protected abstract int       order();
+        protected abstract Container container();
+
+        protected abstract void onClick(final Consumer<View> action);
+
+        @Override
+        public final int compareTo(final View other)
+        {
+            final var thisOrder  = this.order();
+            final var otherOrder = (other == null) ? Integer.MAX_VALUE : other.order();
+            return Integer.compare(thisOrder, otherOrder);
+        }
+
+        protected static final class Filled extends View
         {
             private final Container container;
             private final JButton   button;
@@ -112,7 +163,16 @@ public final class Pages extends JPanel
 
                 checkBox.setVisible(false);
                 checkBox.setFocusable(false);
+                checkBox.addActionListener(_ -> toggle());
                 this.add(checkBox, Layout.gridBagConstraints());
+            }
+
+            private void toggle()
+            {
+                if (container.relevant())
+                    uncheck();
+                else
+                    check();
             }
 
             @Override
@@ -125,6 +185,7 @@ public final class Pages extends JPanel
             protected void hideCheckBox()
             {
                 checkBox.setVisible(false);
+                uncheck();
             }
 
             @Override
@@ -140,14 +201,50 @@ public final class Pages extends JPanel
                 checkBox.setSelected(false);
                 container.relevant(false);
             }
+
+            @Override
+            protected int order()
+            {
+                return container.index();
+            }
+
+            @Override
+            protected Container container()
+            {
+                return container;
+            }
+
+            @Override
+            protected void onClick(final Consumer<View> action)
+            {
+                Precondition.nonNull(action);
+                button.addActionListener(_ -> action.accept(this));
+            }
         }
 
-        private static final class Empty extends View
+        protected static final class Empty extends View
         {
             @Override protected void showCheckBox() {}
             @Override protected void hideCheckBox() {}
             @Override protected void check()        {}
             @Override protected void uncheck()      {}
+
+            @Override
+            protected int order()
+            {
+                return Integer.MAX_VALUE;
+            }
+
+            @Override
+            protected Container container()
+            {
+                return null;
+            }
+
+            @Override
+            protected void onClick(final Consumer<View> action)
+            {
+            }
         }
     }
 }
