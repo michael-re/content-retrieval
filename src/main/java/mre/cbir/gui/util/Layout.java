@@ -3,8 +3,10 @@ package mre.cbir.gui.util;
 import net.miginfocom.swing.MigLayout;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.LayoutManager;
 
 public final class Layout
 {
@@ -20,6 +22,16 @@ public final class Layout
     public static String borderLayoutCenter()
     {
         return BorderLayout.CENTER;
+    }
+
+    public static String borderLayoutSouth()
+    {
+        return BorderLayout.SOUTH;
+    }
+
+    public static LayoutManager flowLayout()
+    {
+        return new FlowLayout(FlowLayout.CENTER);
     }
 
     public static GridBagLayout gridBagLayout()

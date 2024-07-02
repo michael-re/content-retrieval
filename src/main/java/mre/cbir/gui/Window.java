@@ -2,6 +2,7 @@ package mre.cbir.gui;
 
 import mre.cbir.core.image.Collection;
 import mre.cbir.core.util.Nullable;
+import mre.cbir.gui.panel.Control;
 import mre.cbir.gui.panel.Gallery;
 import mre.cbir.gui.panel.Menu;
 import mre.cbir.gui.util.Assets;
@@ -20,12 +21,14 @@ public final class Window extends JFrame
     private final int WINDOW_HEIGHT = 1_000;
 
     private final Menu    menu;
+    private final Control control;
     private final Gallery gallery;
 
     public Window()
     {
         this.menu    = new Menu();
         this.gallery = new Gallery();
+        this.control = new Control(gallery);
 
         this.initFrame();
         this.initMenu();
@@ -60,6 +63,7 @@ public final class Window extends JFrame
     private void initPanels()
     {
         this.setLayout(Layout.migLayout(10, 10));
+        this.getContentPane().add(control, "cell 0 0 10 5");
         this.getContentPane().add(gallery, "cell 0 5 10 5");
     }
 
@@ -117,6 +121,7 @@ public final class Window extends JFrame
             }
 
             gallery.load(collection);
+            control.load(gallery);
             this.revalidate();
             this.repaint();
             System.gc();
