@@ -29,11 +29,6 @@ public final class FeatureMatrix
         this.normalizedFeatureBinCount = Compute.largestBin(normalizedFeatureMatrix);
     }
 
-    public Collection collection()
-    {
-        return collection;
-    }
-
     public DistanceMatrix colorCodeDistanceMatrix()
     {
         return colorCodeDistanceMatrix;
@@ -117,9 +112,9 @@ public final class FeatureMatrix
 
             // normalize: v = (v - μ) / σ
             for (var bin = 0; bin < mean.length; bin++)
-                for (var image = 0; image < normalized.length; image++)
-                    normalized[image].sub(bin, mean[bin])
-                                     .div(bin, stdev[bin]);
+                for (final var histogram : normalized)
+                    histogram.sub(bin, mean[bin])
+                             .div(bin, stdev[bin]);
 
             return normalized;
         }

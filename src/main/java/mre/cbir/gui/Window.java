@@ -17,9 +17,6 @@ import java.util.Objects;
 
 public final class Window extends JFrame
 {
-    private final int WINDOW_WIDTH  = 1_000;
-    private final int WINDOW_HEIGHT = 1_000;
-
     private final Menu    menu;
     private final Control control;
     private final Gallery gallery;
@@ -38,7 +35,7 @@ public final class Window extends JFrame
     private void initFrame()
     {
         this.setTitle("Content Based Image Retrieval System");
-        this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        this.setSize(1_000, 1_000);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -46,12 +43,9 @@ public final class Window extends JFrame
 
     private void initMenu()
     {
-        menu.addItem    ("File",    "Open Folder");
-        menu.addItem    ("File",    "Exit");
+        menu.addItem    ("File",    "Open Folder").setIcon(Assets.icon("folder-open"));
+        menu.addItem    ("File",    "Exit")       .setIcon(Assets.icon("exit"));
         menu.addCheckbox("Options", "Relevance Feedback");
-
-        menu.getItem("Open Folder").setIcon(Assets.icon("folder-open"));
-        menu.getItem("Exit")       .setIcon(Assets.icon("exit"));
 
         menu.getItem("Open Folder")       .addActionListener(_ -> openAction());
         menu.getItem("Exit")              .addActionListener(_ -> exitAction());

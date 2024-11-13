@@ -81,12 +81,12 @@ public final class Pages extends JPanel
 
     public void showCheckBox()
     {
-        views.stream().forEach(View::showCheckBox);
+        views.forEach(View::showCheckBox);
     }
 
     public void hideCheckBox()
     {
-        views.stream().forEach(View::hideCheckBox);
+        views.forEach(View::hideCheckBox);
     }
 
     public void sort()
@@ -99,7 +99,7 @@ public final class Pages extends JPanel
     public void sort(final Comparator<Container> comparator)
     {
         Precondition.nonNull(comparator);
-        Collections.sort(views, (a, b) -> comparator.compare(a.container(), b.container()));
+        views.sort((a, b) -> comparator.compare(a.container(), b.container()));
         currentPage.incrementAndGet();
         showPage(0);
     }
@@ -120,7 +120,7 @@ public final class Pages extends JPanel
         return !views.isEmpty() && (pageIndex >= 0 && pageIndex < pageCount);
     }
 
-    protected static abstract class View extends JLabel implements Comparable<View>
+    public static abstract class View extends JLabel implements Comparable<View>
     {
         protected abstract void showCheckBox();
         protected abstract void hideCheckBox();
@@ -141,7 +141,7 @@ public final class Pages extends JPanel
             return Integer.compare(thisOrder, otherOrder);
         }
 
-        protected static final class Filled extends View
+        public static final class Filled extends View
         {
             private final Container container;
             private final JButton   button;
@@ -222,9 +222,9 @@ public final class Pages extends JPanel
             }
         }
 
-        protected static final class Empty extends View
+        public static final class Empty extends View
         {
-            protected Empty()
+            private Empty()
             {
                 final var border = Border.titleBorder("  ");
                 this.setBorder(Border.compoundBorder(border));

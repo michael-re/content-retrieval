@@ -43,11 +43,6 @@ public final class Gallery extends JPanel
         return collection;
     }
 
-    public FeatureMatrix featureMatrix()
-    {
-        return featureMatrix;
-    }
-
     public void onViewClick(final Consumer<Pages.View> action)
     {
         Precondition.nonNull(action);
